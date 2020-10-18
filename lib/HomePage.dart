@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {});
     drinks = jsonDecode(res.body)["drinks"];
-    print(drinks.toString());
   }
 
   @override
@@ -39,6 +38,12 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Center(child: Text("Coffee Me")),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.favorite),
+              onPressed: () {},
+            ),
+          ],
         ),
         body: Center(
           child: res != null
@@ -47,34 +52,87 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     var drink = drinks[index];
                     return ListTile(
-                        title: Text(
-                          "${drink["strDrink"]}",
-                          style: TextStyle(fontSize: 22, color: Colors.white),
+                      title: Text(
+                        "${drink["strDrink"]}",
+                        style: TextStyle(fontSize: 22, color: Colors.white),
+                      ),
+                      subtitle: Text(
+                        "${drink["idDrink"]}",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      leading: Hero(
+                        tag: drink["idDrink"],
+                        child: CircleAvatar(
+                          radius: 28,
+                          backgroundImage: NetworkImage(drink["strDrinkThumb"]),
                         ),
-                        subtitle: Text(
-                          "${drink["idDrink"]}",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        leading: Hero(
-                          tag: drink["idDrink"],
-                          child: CircleAvatar(
-                            radius: 28,
-                            backgroundImage:
-                                NetworkImage(drink["strDrinkThumb"]),
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DrinkDetails(drink: drink)));
-                        });
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DrinkDetails(drink: drink)));
+                      },
+                    );
                   },
                 )
               : CircularProgressIndicator(
                   backgroundColor: Colors.white,
                 ),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text("Happy Sinha"),
+                accountEmail: Text("happyk8651@gmail.com"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      "https://srkarijobs.info/about-us/Happy-Sinha.jpg"),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text("Account"),
+                subtitle: Text("Personal"),
+                trailing: Icon(Icons.edit),
+              ),
+              ListTile(
+                leading: Icon(Icons.email),
+                title: Text("Email"),
+                subtitle: Text("happyk8651@gmail.com"),
+//                trailing: Icon(Icons.send),
+              ),
+              ListTile(
+                leading: Icon(Icons.shopping_cart),
+                title: Text("Add to Cart"),
+                subtitle: Text("Shopping Cart"),
+//                trailing: Icon(Icons.add),
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text("Favorite"),
+//                trailing: Icon(Icons.face),
+                subtitle: Text("Favorite List"),
+              ),
+              ListTile(
+                leading: Icon(Icons.contact_mail),
+                title: Text("About Us"),
+                subtitle: Text("Our Missions"),
+              ),
+              ListTile(
+                leading: Icon(Icons.perm_phone_msg),
+                title: Text("Contact Us"),
+                subtitle: Text("Contact to Customer Care "),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.shopping_cart),
         ),
       ),
     );
